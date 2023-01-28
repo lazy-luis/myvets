@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginAdmin } from "../components/apis/adminApi";
-import { setUserDetails } from "../store/user";
+import { viewUser } from "../../components/apis/userApi";
 
-const Login = () => {
+const Index = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [responseData, setResponseData] = useState({});
 
-  const myDispatch = useDispatch();
+  const { Admin_Type } = useSelector((state) => state.user.userDetails);
   const myNavigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,26 +17,23 @@ const Login = () => {
     setIsLoading(true);
     setResponseData({});
 
-    const loginData = {
+    const searchData = {
       email: email,
-      password: password,
     };
-    const loginRes = await loginAdmin(loginData);
+    const searchRes = await viewUser(searchData);
     setResponseData({
-      status: loginRes.status,
-      message: loginRes.message,
+      status: searchRes.status,
+      message: searchRes.message,
     });
-    myDispatch(setUserDetails(loginRes.user));
-    myNavigate("/dashboard");
 
     setIsLoading(false);
   };
 
   return (
     <>
-      <div className="fullScreenDiv">
+      <div className="dashPageMain">
         <div className="authFormContain">
-          <h4> Login </h4>
+          <h4> Search User </h4>
           <form onSubmit={handleSubmit}>
             {responseData?.status !== "" &&
               responseData?.status !== undefined && (
@@ -52,23 +47,21 @@ const Login = () => {
                   {responseData?.message}
                 </div>
               )}
-            <label> Email </label>
+            <label> Enter User Email </label>
             <input
               type={"text"}
-              placeholder={"Email"}
+              placeholder={"User Email"}
               value={email}
               onInput={(e) => setEmail(e.target.value)}
             />
-            <label> Password </label>
-            <input
-              type={"password"}
-              placeholder={"Password"}
-              value={password}
-              onInput={(e) => setPassword(e.target.value)}
-            />
-            <button type={"submit"} disabled={isLoading}>
-              {isLoading ? `Please Wait...` : `Sign In`}
+            <button type={"submit"}>
+              {isLoading ? `Searching...` : `Search`}
             </button>
+            {Admin_Type === "2" && (
+              <button type={"button"} onClick={() => myNavigate("user/create")}>
+                Create User
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -76,4 +69,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Index;
