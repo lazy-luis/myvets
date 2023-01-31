@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const baseUrl = "http://localhost/myVetsBE";
-const baseUrl = "http://myvets.thrida.com";
+const baseUrl = "https://myvets.thrida.com";
 
 export const myVetsApi = axios.create({
   baseURL: baseUrl,
