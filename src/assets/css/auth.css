@@ -77,3 +77,9 @@
   color: seagreen;
   background: transparent;
 }
+
+@media (max-width: 768px) {
+  .authFormContain {
+    width: 90%;
+  }
+}

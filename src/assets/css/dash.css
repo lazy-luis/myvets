@@ -41,3 +41,9 @@
 .mainDashDiv .DashDiv {
   flex: 1;
 }
+
+@media (max-width: 768px) {
+  .mainDashDiv .sideDashDiv {
+    display: none;
+  }
+}
